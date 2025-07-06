@@ -6,13 +6,11 @@ import {
   PromptTemplate,
 } from "@langchain/core/prompts";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import { Redis } from "@upstash/redis";
 import {
   LangChainStream,
   StreamingTextResponse,
   Message as VercelChatMessage,
 } from "ai";
-import { UpstashRedisCache } from "langchain/cache/upstash_redis";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
 import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 import { createRetrievalChain } from "langchain/chains/retrieval";
@@ -32,10 +30,6 @@ export async function POST(req: Request) {
 
     const currentMessageContent = messages[messages.length - 1].content;
 
-    const cache = new UpstashRedisCache({
-      client: Redis.fromEnv(),
-    });
-
     const { stream, handlers } = LangChainStream();
 
     const chatModel = new ChatGoogleGenerativeAI({
@@ -43,13 +37,11 @@ export async function POST(req: Request) {
       streaming: true,
       callbacks: [handlers],
       verbose: true,
-      cache,
     });
 
     const rephrasingModel = new ChatGoogleGenerativeAI({
       modelName: "gemini-2.0-flash-exp",
       verbose: true,
-      cache,
     });
 
     const retriever = (await getVectorStore()).asRetriever();
