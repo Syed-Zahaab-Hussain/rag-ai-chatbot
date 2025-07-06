@@ -10,13 +10,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.22",
     "@datastax/astra-db-ts": "^0.1.4",
     "@langchain/google-genai": "^0.2.14",
     "@upstash/redis": "^1.28.2",
+    "@langchain/core": "^0.3.62",
     "ai": "^2.2.32",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.1",
-    "langchain": "^0.2.11",
+     "langchain": "^0.3.29",
     "lucide-react": "^0.320.0",
     "next": "14.1.0",
     "next-themes": "^0.2.1",
